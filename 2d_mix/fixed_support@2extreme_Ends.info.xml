@@ -1,0 +1,742 @@
+<?xml version="1.0"?>
+
+<cfsInfo status="finished" infoWriteCounter="304" infoRejectCounter="0">
+  <summary>
+    <timer wall-clock="14.06s" wall="14.062" cpu="13.6647" calls="1"/>
+    <!-- memory in MB-->
+    <memory final="249" peak="254"/>
+  </summary>
+  <header id="">
+    <environment started="2025-Jan-29 19:34:00" host="garam"/>
+    <progOpts problem="2D_distributed_load" parameterFile="/home/xarvis/Desktop/assignment/openCFS/task6/2D_distributed_load.xml" schemaPath="/home/xarvis/Desktop/assignment/openCFS/share/xml" meshFile="/home/xarvis/Desktop/assignment/openCFS/task6/box2d-t_0.3-nx_200-ny_20.mesh" logConfFile="" detailed="no">
+      <cfs version="24.10" name="Ideal Implementation" build="RELEASE" git_commit="ff0d6d2fd8eaad0f51a5bf5bd63a9da5bde35b36" git_branch="master" compiled="Nov  7 2024" exe="cfs"/>
+      <openmp CFS_NUM_THREADS="1" MKL_NUM_THREADS="1" OMP_NUM_THREADS="1"/>
+    </progOpts>
+    <domain nx="200" ny="20" nz="1">
+      <grids>
+        <timer wall-clock="0.138s" wall="0.138" cpu="0.138613" calls="1"/>
+        <grid gridId="default" dimensions="2" elements="4000" nodes="4221"/>
+      </grids>
+      <coordinateSystems>
+        <system name="default"/>
+      </coordinateSystems>
+      <regions>
+        <region name="void" id="0" type="volume" regular="yes" hom="yes" nodes="1100" elems="886" isQuadratic="no"/>
+        <region name="solid" id="1" type="volume" regular="yes" hom="yes" nodes="625" elems="410" isQuadratic="no"/>
+        <region name="mech" id="2" type="volume" regular="yes" hom="yes" nodes="2922" elems="2704" isQuadratic="no"/>
+      </regions>
+      <namedNodes>
+        <nodes name="bottom" count="201"/>
+        <nodes name="top" count="201"/>
+        <nodes name="left" count="21"/>
+        <nodes name="right" count="21"/>
+        <nodes name="bottom_left" count="1" coord="(0,0)"/>
+        <nodes name="bottom_right" count="1" coord="(30,0)"/>
+        <nodes name="top_left" count="1" coord="(0,3)"/>
+        <nodes name="top_right" count="1" coord="(30,3)"/>
+        <nodes name="box_width" count="1365"/>
+        <nodes name="box_curve" count="126"/>
+        <nodes name="left_support_point" count="1" coord="(0,2.55)"/>
+        <nodes name="right_support_point" count="1" coord="(30,2.55)"/>
+      </namedNodes>
+      <namedElements/>
+      <globalMathParser dt="0" f="0" nx="200" ny="20" nz="1" step="0" t="0" t0="0"/>
+    </domain>
+    <results>
+      <timer wall-clock="2.485s" wall="2.485" cpu="2.84233" calls="2682"/>
+    </results>
+  </header>
+  <calculation>
+    <process/>
+  </calculation>
+  <sequenceStep sequence="1">
+    <static>
+      <init_static>
+        <timer wall-clock="0.099s" wall="0.099" cpu="0.084326" calls="1"/>
+      </init_static>
+    </static>
+    <PDE>
+      <mechanic>
+        <header>
+          <region name="solid" damping="none"/>
+          <region name="mech" damping="none"/>
+          <integrators>
+            <matrixBiLinearForms>
+              <bilinearForm integrator="LinElastInt" type="BDBInt" complex="no" BOp="StrainOperator2D" coef="CoefFunctionOpt" region="mech">
+                <row pde="mechanic" functionId="0" result="mechDisplacement"/>
+                <column pde="mechanic" functionId="0" result="mechDisplacement"/>
+                <destination feMatrix="stiffness" feMatrixMapped="system" feSecondMatrix="no_fe_matrix" feSecondMatrixFac="0.0  "/>
+                <attributes entryType="RealPart" counterPart="no" symmetric="yes" solutionDependent="no" updatedGeo="no"/>
+              </bilinearForm>
+              <bilinearForm integrator="LinElastInt" type="BDBInt" complex="no" BOp="StrainOperator2D" coef="CoefFunctionOpt" region="solid">
+                <row pde="mechanic" functionId="0" result="mechDisplacement"/>
+                <column pde="mechanic" functionId="0" result="mechDisplacement"/>
+                <destination feMatrix="stiffness" feMatrixMapped="system" feSecondMatrix="no_fe_matrix" feSecondMatrixFac="0.0  "/>
+                <attributes entryType="RealPart" counterPart="no" symmetric="yes" solutionDependent="no" updatedGeo="no"/>
+              </bilinearForm>
+            </matrixBiLinearForms>
+            <rhsLinearForms>
+              <linearForm integrator="NodalForceInt">
+                <entities name="box_curve" size="126" region="no_region"/>
+                <coef type="CoefFunctionConst" value="[0, 0.015873]"/>
+                <row pde="mechanic" result="mechDisplacement" solutionDependent="no"/>
+              </linearForm>
+            </rhsLinearForms>
+          </integrators>
+        </header>
+        <material name="99lines">
+          <regionList>
+            <region name="mech"/>
+            <region name="solid"/>
+          </regionList>
+          <property name="Mechanic_Stiffness_Tensor">
+            <tensor dim1="6" dim2="6">
+              <real>
+                 1.346154e+00  5.769231e-01  5.769231e-01  0.000000e+00  0.000000e+00  0.000000e+00
+                 5.769231e-01  1.346154e+00  5.769231e-01  0.000000e+00  0.000000e+00  0.000000e+00
+                 5.769231e-01  5.769231e-01  1.346154e+00  0.000000e+00  0.000000e+00  0.000000e+00
+                 0.000000e+00  0.000000e+00  0.000000e+00  3.846154e-01  0.000000e+00  0.000000e+00
+                 0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  3.846154e-01  0.000000e+00
+                 0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  3.846154e-01
+              </real>
+            </tensor>
+          </property>
+          <property name="Mechanic_Elasticity_Modulus" value="(1,0)"/>
+          <property name="Mechanic_Poisson_Ratio" value="(0.3,0)"/>
+          <property name="Density" value="(1e-08,0)"/>
+          <property name="Rayleigh_Frequency" value="1000"/>
+          <property name="Loss_TangensDelta" value="0.029999999999999999"/>
+          <property name="Mechanic_Stiffness_Tensor">
+            <tensor dim1="6" dim2="6">
+              <real>
+                 1.346154e+00  5.769231e-01  5.769231e-01  0.000000e+00  0.000000e+00  0.000000e+00
+                 5.769231e-01  1.346154e+00  5.769231e-01  0.000000e+00  0.000000e+00  0.000000e+00
+                 5.769231e-01  5.769231e-01  1.346154e+00  0.000000e+00  0.000000e+00  0.000000e+00
+                 0.000000e+00  0.000000e+00  0.000000e+00  3.846154e-01  0.000000e+00  0.000000e+00
+                 0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  3.846154e-01  0.000000e+00
+                 0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  3.846154e-01
+              </real>
+            </tensor>
+          </property>
+          <property name="Mechanic_Elasticity_Modulus" value="(1,0)"/>
+          <property name="Mechanic_Poisson_Ratio" value="(0.3,0)"/>
+          <property name="Density" value="(1e-08,0)"/>
+          <property name="Rayleigh_Frequency" value="1000"/>
+          <property name="Loss_TangensDelta" value="0.029999999999999999"/>
+        </material>
+        <feSpaces>
+          <mechDisplacement>
+            <h1Nodal>
+              <regionList>
+                <solid/>
+                <default order="1"/>
+                <mech/>
+              </regionList>
+            </h1Nodal>
+          </mechDisplacement>
+        </feSpaces>
+        <feFunctions>
+          <mechDisplacement/>
+          <homDirichletBC>
+            <nodeList name="left_support_point" dofs="x y"/>
+            <nodeList name="right_support_point" dofs="x y"/>
+          </homDirichletBC>
+          <inhomDirichletBC/>
+        </feFunctions>
+      </mechanic>
+    </PDE>
+    <OLAS>
+      <mechanic>
+        <setup idbcHandling="elimination" staticCondensation="no">
+          <feFunctions totalNumEqns="6664" totalNumFreeEqns="6664" totalNumDirichlet="0">
+            <function id="0" name="mechDisplacement" numEqns="6664" lastFreeEqn="6664" numDirichlet="0">
+              <usedInBlocks>
+                <block id="0"/>
+              </usedInBlocks>
+            </function>
+          </feFunctions>
+          <sbmBlocks>
+            <block id="0" size="6664" lastFreeIndex="6664"/>
+          </sbmBlocks>
+        </setup>
+        <solver>
+          <cholmod>
+            <header>
+              <parameters>
+                <factorization>
+                  <nmethods default="0"/>
+                  <postorder default="1"/>
+                  <dbound default="0"/>
+                </factorization>
+                <supernodal>
+                  <method default="auto"/>
+                  <switch default="40"/>
+                </supernodal>
+                <output>
+                  <level default="3"/>
+                  <precise default="0"/>
+                </output>
+              </parameters>
+            </header>
+            <summary>
+              <setup>
+                <timer label="setup_cholmod" wall-clock="2.475s" wall="2.475" cpu="2.5376" calls="172"/>
+              </setup>
+              <solve>
+                <timer label="solve_cholmod" wall-clock="0.059s" wall="0.059" cpu="0.163818" calls="172"/>
+              </solve>
+            </summary>
+            <process>
+              <setup selected_factorization_method="1" ll_flop_count="1.1965e+07" nz_in_L="2.4571e+05" nz_in_triA="60656" memory_usage="" memory_inuse="" malloc_count="" nrealloc_col="0" nrealloc_factor="0" ndbounds_hit="0">
+                <method id="1" lnz="2.4571e+05" fl="1.1965e+07"/>
+              </setup>
+              <solver/>
+            </process>
+          </cholmod>
+        </solver>
+        <precond>
+          <idPrecond>
+            <summary>
+              <precond_Id_setup>
+                <timer wall-clock="0s" wall="0" cpu="0.001035" calls="172"/>
+              </precond_Id_setup>
+              <precond_Id_run>
+                <timer wall-clock="0s" wall="0" cpu="0" calls="0"/>
+              </precond_Id_run>
+            </summary>
+          </idPrecond>
+        </precond>
+        <process>
+          <solver solutionIsOkay="yes"/>
+        </process>
+      </mechanic>
+      <graph_setup>
+        <timer wall-clock="0.051s" wall="0.051" cpu="0.036278" calls="1" sub="true"/>
+      </graph_setup>
+    </OLAS>
+    <analysis>
+      <summary>
+        <assemble>
+          <timer wall-clock="1.862s" wall="1.862" cpu="1.95297" calls="344"/>
+        </assemble>
+      </summary>
+    </analysis>
+  </sequenceStep>
+  <optimization haltopt_file="/home/xarvis/Desktop/assignment/openCFS/task6/HALTOPT">
+    <header>
+      <objective type="compliance" name="compliance" linear="no" access="physical" task="minimize"/>
+      <multipleExcitations type="no_type"/>
+      <constraints>
+        <constraint type="volume" name="volume" linear="yes" access="filtered" bound_value="0.2" bound="upperBound" design="default" excitation="0"/>
+        <constraint type="volume" name="physical_volume" access="physical" mode="observation" design="default" excitation="0"/>
+        <constraint type="greyness" name="physical_greyness" access="physical" mode="observation" design="default" excitation="0"/>
+      </constraints>
+      <designSpace pamping="0" regular="yes">
+        <setup_design>
+          <timer wall-clock="0.045s" wall="0.045" cpu="0.004005" calls="2"/>
+        </setup_design>
+        <filters use_mat_filt="yes">
+          <filter type="maxEdge" value="1.1" contribution="linear" design="density" elems="2704" avg_radius="0.165" avg_neighbors="3.8395"/>
+          <timer wall-clock="0.004s" wall="0.004" cpu="0.00477" calls="1"/>
+        </filters>
+        <transferFunctions>
+          <transferFunction type="simp" application="mech" design="density" param="3"/>
+        </transferFunctions>
+        <designVariables opt_vars="2704" field_elems="2704" field_fe_elemes="2704">
+          <design type="density" upperBound="1" lowerBound="0.001" physicalLowerBound="1e-09"/>
+        </designVariables>
+        <localElementCache org="1" shadow="0" mat_deriv="0" megabytes="0"/>
+        <regions>
+          <region name="mech" elements="2704" bimaterial="-" groundmaterial="-"/>
+        </regions>
+      </designSpace>
+      <sequence step="1" complex="no" harmonic="no" eigenvalue="no" bloch="no" material="mechanic" homogenization="no"/>
+      <excitations>
+        <excitation index="0" meta_idx="0" label="0" weight="1" normalized_weight="1" load="box_curve"/>
+      </excitations>
+    </header>
+    <commit mode="each_forward" stride="1"/>
+    <optimizer>
+      <ipopt>
+        <summary>
+          <ipopt>
+            <timer wall-clock="2.735s" wall="2.735" cpu="2.83002" calls="811"/>
+          </ipopt>
+        </summary>
+        <scaling active="no"/>
+      </ipopt>
+    </optimizer>
+    <summary>
+      <eval_objective>
+        <timer wall-clock="0s" wall="0" cpu="0.063218" calls="651"/>
+      </eval_objective>
+      <eval_constraints>
+        <timer wall-clock="0.003s" wall="0.003" cpu="0.061113" calls="179"/>
+      </eval_constraints>
+      <eval_grad_objective>
+        <timer wall-clock="0.22s" wall="0.22" cpu="0.287347" calls="150"/>
+      </eval_grad_objective>
+      <eval_grad_constraints>
+        <timer wall-clock="0.038s" wall="0.038" cpu="0.12548" calls="150"/>
+      </eval_grad_constraints>
+      <break converged="yes">
+        <reason msg="IPOPT status code 5"/>
+      </break>
+      <functions>
+        <compliance min="915.42" max="2462.4" oscillations="30"/>
+        <volume min="0.19997" max="0.50269" oscillations="57"/>
+        <physical_volume min="0.023016" max="0.14053" oscillations="55"/>
+        <physical_greyness min="0.066878" max="0.44347" oscillations="66"/>
+      </functions>
+    </summary>
+    <process>
+      <iteration number="0" duration="0.532" compliance="1221.62962643182" volume="0.500000000000014" physical_volume="0.125000000000004" physical_greyness="0.437499997374989" nObj="1">
+        <excitation index="0" objective="1221.6" objective_weight="1"/>
+      </iteration>
+      <iteration number="1" duration="0.091" compliance="1101.73156707826" volume="0.502694557556315" physical_volume="0.127225627657005" physical_greyness="0.4434721213905" nObj="2">
+        <excitation index="0" objective="1101.7" objective_weight="1"/>
+      </iteration>
+      <iteration number="2" duration="0.072" compliance="1101.73405625086" volume="0.502690426885197" physical_volume="0.127222539391874" physical_greyness="0.443462793568443" nObj="3">
+        <excitation index="0" objective="1101.7" objective_weight="1"/>
+      </iteration>
+      <iteration number="3" duration="0.082" compliance="1076.76936247459" volume="0.478017548096296" physical_volume="0.110615007129565" physical_greyness="0.390332136857761" nObj="4">
+        <excitation index="0" objective="1076.8" objective_weight="1"/>
+      </iteration>
+      <iteration number="4" duration="0.075" compliance="1123.3994081725" volume="0.416335041885255" physical_volume="0.0781757732451978" physical_greyness="0.276522114022868" nObj="5">
+        <excitation index="0" objective="1123.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="5" duration="0.074" compliance="1602.04800948568" volume="0.330750839109405" physical_volume="0.0408262077626196" physical_greyness="0.148412751241938" nObj="6">
+        <excitation index="0" objective="1602" objective_weight="1"/>
+      </iteration>
+      <iteration number="6" duration="0.087" compliance="2462.44768526161" volume="0.21715219942636" physical_volume="0.0230407503990415" physical_greyness="0.0681263666209994" nObj="7">
+        <excitation index="0" objective="2462.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="7" duration="0.078" compliance="2454.32143239838" volume="0.199977063684909" physical_volume="0.0230164439083768" physical_greyness="0.066877955765119" nObj="8">
+        <excitation index="0" objective="2454.3" objective_weight="1"/>
+      </iteration>
+      <iteration number="8" duration="0.088" compliance="2250.14551216104" volume="0.199973702835694" physical_volume="0.0245214870644029" physical_greyness="0.0713201073134117" nObj="9">
+        <excitation index="0" objective="2250.1" objective_weight="1"/>
+      </iteration>
+      <iteration number="9" duration="0.078" compliance="2067.88983233439" volume="0.199973771679819" physical_volume="0.0292995841327903" physical_greyness="0.0764857148170969" nObj="10">
+        <excitation index="0" objective="2067.9" objective_weight="1"/>
+      </iteration>
+      <iteration number="10" duration="0.08" compliance="1972.93993902183" volume="0.199976219672562" physical_volume="0.0311474194269924" physical_greyness="0.0768031310303481" nObj="11">
+        <excitation index="0" objective="1972.9" objective_weight="1"/>
+      </iteration>
+      <iteration number="11" duration="0.072" compliance="1796.38908296153" volume="0.199981247541828" physical_volume="0.036835724850171" physical_greyness="0.0844098541057088" nObj="12">
+        <excitation index="0" objective="1796.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="12" duration="0.072" compliance="1691.08488645641" volume="0.199982922739621" physical_volume="0.0413850657924745" physical_greyness="0.0927942327572863" nObj="13">
+        <excitation index="0" objective="1691.1" objective_weight="1"/>
+      </iteration>
+      <iteration number="13" duration="0.073" compliance="1591.5141928788" volume="0.199983435863809" physical_volume="0.045178872399055" physical_greyness="0.100498617125978" nObj="14">
+        <excitation index="0" objective="1591.5" objective_weight="1"/>
+      </iteration>
+      <iteration number="14" duration="0.078" compliance="1466.22837055219" volume="0.19998419461577" physical_volume="0.0508830721853529" physical_greyness="0.110602997874628" nObj="15">
+        <excitation index="0" objective="1466.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="15" duration="0.088" compliance="1417.80788015016" volume="0.19998321861968" physical_volume="0.0524476547703342" physical_greyness="0.113149247720401" nObj="16">
+        <excitation index="0" objective="1417.8" objective_weight="1"/>
+      </iteration>
+      <iteration number="16" duration="0.082" compliance="1628.80367142483" volume="0.199971115053994" physical_volume="0.0398678899866961" physical_greyness="0.09436410890668" nObj="17">
+        <excitation index="0" objective="1628.8" objective_weight="1"/>
+      </iteration>
+      <iteration number="17" duration="0.081" compliance="1478.19241697567" volume="0.199972783619665" physical_volume="0.0466790674060255" physical_greyness="0.103514406130241" nObj="18">
+        <excitation index="0" objective="1478.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="18" duration="0.08" compliance="1444.45433839264" volume="0.199971984091359" physical_volume="0.0483906149445059" physical_greyness="0.106029757522684" nObj="19">
+        <excitation index="0" objective="1444.5" objective_weight="1"/>
+      </iteration>
+      <iteration number="19" duration="0.076" compliance="1315.15538757709" volume="0.199978516768537" physical_volume="0.0599713410323448" physical_greyness="0.113394313792546" nObj="20">
+        <excitation index="0" objective="1315.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="20" duration="0.095" compliance="1250.21976719056" volume="0.19998242971366" physical_volume="0.0666678207170318" physical_greyness="0.120447863056795" nObj="21">
+        <excitation index="0" objective="1250.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="21" duration="0.067" compliance="1191.63343630592" volume="0.199984745691388" physical_volume="0.0742191108796268" physical_greyness="0.129182072997296" nObj="22">
+        <excitation index="0" objective="1191.6" objective_weight="1"/>
+      </iteration>
+      <iteration number="22" duration="0.078" compliance="1155.04685846164" volume="0.199986329242591" physical_volume="0.0808524725342852" physical_greyness="0.136983711234985" nObj="23">
+        <excitation index="0" objective="1155" objective_weight="1"/>
+      </iteration>
+      <iteration number="23" duration="0.089" compliance="1145.22987370358" volume="0.199986512749841" physical_volume="0.0819228254419119" physical_greyness="0.137833048646507" nObj="24">
+        <excitation index="0" objective="1145.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="24" duration="0.084" compliance="1137.89276764369" volume="0.199985697356509" physical_volume="0.0823238882162635" physical_greyness="0.137524827172065" nObj="25">
+        <excitation index="0" objective="1137.9" objective_weight="1"/>
+      </iteration>
+      <iteration number="25" duration="0.112" compliance="1132.13253904332" volume="0.19998520529005" physical_volume="0.0826955101732453" physical_greyness="0.137493630699201" nObj="26">
+        <excitation index="0" objective="1132.1" objective_weight="1"/>
+      </iteration>
+      <iteration number="26" duration="0.08" compliance="1122.17562912877" volume="0.199985366497553" physical_volume="0.0837653477877017" physical_greyness="0.139004778531945" nObj="27">
+        <excitation index="0" objective="1122.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="27" duration="0.199" compliance="1106.2443066683" volume="0.199986180196897" physical_volume="0.0861560597653832" physical_greyness="0.140960020174819" nObj="28">
+        <excitation index="0" objective="1106.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="28" duration="0.108" compliance="1088.38488080417" volume="0.199987307937078" physical_volume="0.0894258956656608" physical_greyness="0.143162602522954" nObj="29">
+        <excitation index="0" objective="1088.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="29" duration="0.082" compliance="1164.39401043037" volume="0.199980852115314" physical_volume="0.078843545231617" physical_greyness="0.135147415295123" nObj="30">
+        <excitation index="0" objective="1164.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="30" duration="0.081" compliance="1095.57283199605" volume="0.199986077856413" physical_volume="0.0864394407238219" physical_greyness="0.143963205024875" nObj="31">
+        <excitation index="0" objective="1095.6" objective_weight="1"/>
+      </iteration>
+      <iteration number="31" duration="0.08" compliance="1087.59532879127" volume="0.199985997073692" physical_volume="0.0876856551774747" physical_greyness="0.144843795044613" nObj="32">
+        <excitation index="0" objective="1087.6" objective_weight="1"/>
+      </iteration>
+      <iteration number="32" duration="0.078" compliance="1079.03289526078" volume="0.199986050714064" physical_volume="0.0896643275656889" physical_greyness="0.143223900176946" nObj="33">
+        <excitation index="0" objective="1079" objective_weight="1"/>
+      </iteration>
+      <iteration number="33" duration="0.076" compliance="1209.39642632829" volume="0.199977834512665" physical_volume="0.0710937854815313" physical_greyness="0.131981176527224" nObj="34">
+        <excitation index="0" objective="1209.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="34" duration="0.073" compliance="1131.84882481873" volume="0.19998233577663" physical_volume="0.0792904980867157" physical_greyness="0.139860940773689" nObj="35">
+        <excitation index="0" objective="1131.8" objective_weight="1"/>
+      </iteration>
+      <iteration number="35" duration="0.08" compliance="1111.07077189792" volume="0.199983334087934" physical_volume="0.0827836730380576" physical_greyness="0.142879290391172" nObj="36">
+        <excitation index="0" objective="1111.1" objective_weight="1"/>
+      </iteration>
+      <iteration number="36" duration="0.072" compliance="1059.49616935869" volume="0.199987248925894" physical_volume="0.0938227852443139" physical_greyness="0.14185001057585" nObj="37">
+        <excitation index="0" objective="1059.5" objective_weight="1"/>
+      </iteration>
+      <iteration number="37" duration="0.122" compliance="1049.67716063421" volume="0.199988032625072" physical_volume="0.0956242831391221" physical_greyness="0.143897025889409" nObj="39">
+        <excitation index="0" objective="1049.7" objective_weight="1"/>
+      </iteration>
+      <iteration number="38" duration="0.102" compliance="1036.21813123735" volume="0.199989169611179" physical_volume="0.0984456712761518" physical_greyness="0.145517108844269" nObj="40">
+        <excitation index="0" objective="1036.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="39" duration="0.113" compliance="1019.2638247057" volume="0.199990459394849" physical_volume="0.102713814843498" physical_greyness="0.145475795576636" nObj="41">
+        <excitation index="0" objective="1019.3" objective_weight="1"/>
+      </iteration>
+      <iteration number="40" duration="0.089" compliance="1003.8710770614" volume="0.199992026248879" physical_volume="0.107239044989143" physical_greyness="0.145498416351685" nObj="42">
+        <excitation index="0" objective="1003.9" objective_weight="1"/>
+      </iteration>
+      <iteration number="41" duration="0.071" compliance="1045.61630469894" volume="0.199987975266763" physical_volume="0.0964446676583928" physical_greyness="0.144863449198489" nObj="43">
+        <excitation index="0" objective="1045.6" objective_weight="1"/>
+      </iteration>
+      <iteration number="42" duration="0.075" compliance="1031.59420591691" volume="0.199989098245494" physical_volume="0.0993573945353019" physical_greyness="0.145432263637752" nObj="44">
+        <excitation index="0" objective="1031.6" objective_weight="1"/>
+      </iteration>
+      <iteration number="43" duration="0.091" compliance="1029.23443305366" volume="0.199989261344832" physical_volume="0.0997126426234265" physical_greyness="0.145530600195806" nObj="45">
+        <excitation index="0" objective="1029.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="44" duration="0.083" compliance="1024.082094468" volume="0.19998966628199" physical_volume="0.100867734214877" physical_greyness="0.146106767794402" nObj="46">
+        <excitation index="0" objective="1024.1" objective_weight="1"/>
+      </iteration>
+      <iteration number="45" duration="0.082" compliance="1021.30356255381" volume="0.199989604843941" physical_volume="0.101934561373281" physical_greyness="0.146418525225914" nObj="47">
+        <excitation index="0" objective="1021.3" objective_weight="1"/>
+      </iteration>
+      <iteration number="46" duration="0.119" compliance="1021.52648783051" volume="0.199989557552883" physical_volume="0.102112485387926" physical_greyness="0.146279862601318" nObj="49">
+        <excitation index="0" objective="1021.5" objective_weight="1"/>
+      </iteration>
+      <iteration number="47" duration="0.082" compliance="1022.61220500593" volume="0.199989397638307" physical_volume="0.101860809269811" physical_greyness="0.145895711060061" nObj="50">
+        <excitation index="0" objective="1022.6" objective_weight="1"/>
+      </iteration>
+      <iteration number="48" duration="0.09" compliance="1022.6592743128" volume="0.199989378408277" physical_volume="0.10183807184816" physical_greyness="0.146014362020401" nObj="51">
+        <excitation index="0" objective="1022.7" objective_weight="1"/>
+      </iteration>
+      <iteration number="49" duration="0.075" compliance="1022.20331639168" volume="0.199989372708557" physical_volume="0.101935084606951" physical_greyness="0.145959323549637" nObj="52">
+        <excitation index="0" objective="1022.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="50" duration="0.081" compliance="1021.41811919166" volume="0.199989307262979" physical_volume="0.102347098924921" physical_greyness="0.145913566694357" nObj="53">
+        <excitation index="0" objective="1021.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="51" duration="0.079" compliance="1020.2734909686" volume="0.199989266402333" physical_volume="0.102522987011102" physical_greyness="0.146145713575789" nObj="54">
+        <excitation index="0" objective="1020.3" objective_weight="1"/>
+      </iteration>
+      <iteration number="52" duration="0.097" compliance="1020.3884373089" volume="0.199989234271298" physical_volume="0.102496852033598" physical_greyness="0.146052690135922" nObj="55">
+        <excitation index="0" objective="1020.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="53" duration="0.082" compliance="1018.83861044219" volume="0.199989176768527" physical_volume="0.102581318464627" physical_greyness="0.146430212416358" nObj="56">
+        <excitation index="0" objective="1018.8" objective_weight="1"/>
+      </iteration>
+      <iteration number="54" duration="0.073" compliance="1018.74249141057" volume="0.199989135443506" physical_volume="0.102450253841419" physical_greyness="0.146158046458513" nObj="57">
+        <excitation index="0" objective="1018.7" objective_weight="1"/>
+      </iteration>
+      <iteration number="55" duration="0.097" compliance="1018.09369803325" volume="0.199989074566396" physical_volume="0.102748533594505" physical_greyness="0.146056448294392" nObj="58">
+        <excitation index="0" objective="1018.1" objective_weight="1"/>
+      </iteration>
+      <iteration number="56" duration="0.082" compliance="1016.69582627309" volume="0.199989087671654" physical_volume="0.10294800724732" physical_greyness="0.146389721709583" nObj="59">
+        <excitation index="0" objective="1016.7" objective_weight="1"/>
+      </iteration>
+      <iteration number="57" duration="0.076" compliance="1016.11544776381" volume="0.199989060355376" physical_volume="0.102943539427408" physical_greyness="0.146409727701377" nObj="60">
+        <excitation index="0" objective="1016.1" objective_weight="1"/>
+      </iteration>
+      <iteration number="58" duration="0.093" compliance="1016.10936802476" volume="0.199989004278838" physical_volume="0.102881426295992" physical_greyness="0.146094668504494" nObj="61">
+        <excitation index="0" objective="1016.1" objective_weight="1"/>
+      </iteration>
+      <iteration number="59" duration="0.092" compliance="1015.38810128577" volume="0.19998901317907" physical_volume="0.102901760761623" physical_greyness="0.146134566572448" nObj="62">
+        <excitation index="0" objective="1015.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="60" duration="0.075" compliance="1014.81283982414" volume="0.199989017971836" physical_volume="0.10313486669749" physical_greyness="0.146280693746804" nObj="63">
+        <excitation index="0" objective="1014.8" objective_weight="1"/>
+      </iteration>
+      <iteration number="61" duration="0.076" compliance="1014.23029315408" volume="0.19998899729996" physical_volume="0.103104348740906" physical_greyness="0.146453725362033" nObj="64">
+        <excitation index="0" objective="1014.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="62" duration="0.079" compliance="1013.37180190521" volume="0.19998892236981" physical_volume="0.103527080908546" physical_greyness="0.14639617288465" nObj="65">
+        <excitation index="0" objective="1013.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="63" duration="0.106" compliance="1012.93984110004" volume="0.199988951657494" physical_volume="0.10347595477155" physical_greyness="0.146358687856513" nObj="67">
+        <excitation index="0" objective="1012.9" objective_weight="1"/>
+      </iteration>
+      <iteration number="64" duration="0.093" compliance="1012.07569618889" volume="0.19998895900858" physical_volume="0.103481413650557" physical_greyness="0.146605129203355" nObj="68">
+        <excitation index="0" objective="1012.1" objective_weight="1"/>
+      </iteration>
+      <iteration number="65" duration="0.078" compliance="1011.99900492214" volume="0.199988893718389" physical_volume="0.10339145458317" physical_greyness="0.146403189003213" nObj="69">
+        <excitation index="0" objective="1012" objective_weight="1"/>
+      </iteration>
+      <iteration number="66" duration="0.077" compliance="1011.76800725565" volume="0.199988885370547" physical_volume="0.103427750898997" physical_greyness="0.146227780038846" nObj="70">
+        <excitation index="0" objective="1011.8" objective_weight="1"/>
+      </iteration>
+      <iteration number="67" duration="0.08" compliance="1011.64344120714" volume="0.199988880752488" physical_volume="0.103457609585382" physical_greyness="0.146169200392623" nObj="71">
+        <excitation index="0" objective="1011.6" objective_weight="1"/>
+      </iteration>
+      <iteration number="68" duration="0.073" compliance="1011.44081523258" volume="0.199988905992314" physical_volume="0.103422746891539" physical_greyness="0.146327533547722" nObj="72">
+        <excitation index="0" objective="1011.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="69" duration="0.091" compliance="1011.01375804828" volume="0.199988913168447" physical_volume="0.103454597744773" physical_greyness="0.146592820619425" nObj="73">
+        <excitation index="0" objective="1011" objective_weight="1"/>
+      </iteration>
+      <iteration number="70" duration="0.117" compliance="1010.96199987199" volume="0.19998890711568" physical_volume="0.103490403998088" physical_greyness="0.146677826970391" nObj="75">
+        <excitation index="0" objective="1011" objective_weight="1"/>
+      </iteration>
+      <iteration number="71" duration="0.077" compliance="1010.75430140002" volume="0.199988908995929" physical_volume="0.103488951504133" physical_greyness="0.146791606892929" nObj="76">
+        <excitation index="0" objective="1010.8" objective_weight="1"/>
+      </iteration>
+      <iteration number="72" duration="0.115" compliance="1010.82170258419" volume="0.199988890518391" physical_volume="0.103463249251366" physical_greyness="0.146719896530013" nObj="77">
+        <excitation index="0" objective="1010.8" objective_weight="1"/>
+      </iteration>
+      <iteration number="73" duration="0.104" compliance="1010.43079253593" volume="0.199988900196957" physical_volume="0.103538621971074" physical_greyness="0.146868223848592" nObj="78">
+        <excitation index="0" objective="1010.4" objective_weight="1"/>
+      </iteration>
+      <iteration number="74" duration="0.081" compliance="1010.33746659279" volume="0.199988875548901" physical_volume="0.103597333325329" physical_greyness="0.146762227442449" nObj="79">
+        <excitation index="0" objective="1010.3" objective_weight="1"/>
+      </iteration>
+      <iteration number="75" duration="0.102" compliance="1010.01918461757" volume="0.199988879164545" physical_volume="0.1036381565083" physical_greyness="0.146809091907034" nObj="80">
+        <excitation index="0" objective="1010" objective_weight="1"/>
+      </iteration>
+      <iteration number="76" duration="0.188" compliance="1010.00322675492" volume="0.199988854612149" physical_volume="0.103614129818703" physical_greyness="0.146682995457433" nObj="84">
+        <excitation index="0" objective="1010" objective_weight="1"/>
+      </iteration>
+      <iteration number="77" duration="0.099" compliance="1009.97410515316" volume="0.199988855887067" physical_volume="0.103554942221101" physical_greyness="0.146569609293618" nObj="85">
+        <excitation index="0" objective="1010" objective_weight="1"/>
+      </iteration>
+      <iteration number="78" duration="0.07" compliance="1009.74156522991" volume="0.19998884416564" physical_volume="0.103614617737411" physical_greyness="0.146559582066565" nObj="86">
+        <excitation index="0" objective="1009.7" objective_weight="1"/>
+      </iteration>
+      <iteration number="79" duration="0.197" compliance="1009.51920235906" volume="0.199988856260022" physical_volume="0.103696621227168" physical_greyness="0.14670287310933" nObj="92">
+        <excitation index="0" objective="1009.5" objective_weight="1"/>
+      </iteration>
+      <iteration number="80" duration="0.073" compliance="1009.03078237243" volume="0.199988868921832" physical_volume="0.103873771992043" physical_greyness="0.147026977851038" nObj="93">
+        <excitation index="0" objective="1009" objective_weight="1"/>
+      </iteration>
+      <iteration number="81" duration="0.093" compliance="1008.23596628984" volume="0.199988865290907" physical_volume="0.104057588240248" physical_greyness="0.147005428856526" nObj="94">
+        <excitation index="0" objective="1008.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="82" duration="0.1" compliance="1007.17853501631" volume="0.199988819603971" physical_volume="0.104216392479415" physical_greyness="0.146892323212639" nObj="95">
+        <excitation index="0" objective="1007.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="83" duration="0.081" compliance="1006.29055287416" volume="0.199988864999767" physical_volume="0.104354893163319" physical_greyness="0.147172666023196" nObj="96">
+        <excitation index="0" objective="1006.3" objective_weight="1"/>
+      </iteration>
+      <iteration number="84" duration="0.082" compliance="1005.23276300004" volume="0.199988934284455" physical_volume="0.104277833004464" physical_greyness="0.147573523642508" nObj="97">
+        <excitation index="0" objective="1005.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="85" duration="0.106" compliance="1004.61903359623" volume="0.199988836303703" physical_volume="0.104423803716339" physical_greyness="0.147389511856623" nObj="98">
+        <excitation index="0" objective="1004.6" objective_weight="1"/>
+      </iteration>
+      <iteration number="86" duration="0.081" compliance="1004.1541648854" volume="0.1999888343376" physical_volume="0.104527323753022" physical_greyness="0.147288109583799" nObj="99">
+        <excitation index="0" objective="1004.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="87" duration="0.083" compliance="1003.77595441906" volume="0.199988815919357" physical_volume="0.104590073081519" physical_greyness="0.147427177856236" nObj="100">
+        <excitation index="0" objective="1003.8" objective_weight="1"/>
+      </iteration>
+      <iteration number="88" duration="0.08" compliance="971.624893812029" volume="0.199992483078622" physical_volume="0.11479632955236" physical_greyness="0.146474012206684" nObj="101">
+        <excitation index="0" objective="971.62" objective_weight="1"/>
+      </iteration>
+      <iteration number="89" duration="0.074" compliance="962.090880014641" volume="0.199993281295969" physical_volume="0.118534944280628" physical_greyness="0.142939318239776" nObj="102">
+        <excitation index="0" objective="962.09" objective_weight="1"/>
+      </iteration>
+      <iteration number="90" duration="0.077" compliance="954.121779754673" volume="0.199994318167043" physical_volume="0.121883021481048" physical_greyness="0.141461657516868" nObj="103">
+        <excitation index="0" objective="954.12" objective_weight="1"/>
+      </iteration>
+      <iteration number="91" duration="0.085" compliance="945.500518593681" volume="0.199995604131587" physical_volume="0.125578478819948" physical_greyness="0.141062764616092" nObj="104">
+        <excitation index="0" objective="945.5" objective_weight="1"/>
+      </iteration>
+      <iteration number="92" duration="0.078" compliance="941.440473766052" volume="0.19999622094176" physical_volume="0.127445414746762" physical_greyness="0.14095915755785" nObj="105">
+        <excitation index="0" objective="941.44" objective_weight="1"/>
+      </iteration>
+      <iteration number="93" duration="0.078" compliance="941.363172984756" volume="0.199996201555303" physical_volume="0.127298089961256" physical_greyness="0.140969535838816" nObj="106">
+        <excitation index="0" objective="941.36" objective_weight="1"/>
+      </iteration>
+      <iteration number="94" duration="0.079" compliance="937.139267373946" volume="0.199996803501226" physical_volume="0.129130259775211" physical_greyness="0.139784329747152" nObj="107">
+        <excitation index="0" objective="937.14" objective_weight="1"/>
+      </iteration>
+      <iteration number="95" duration="0.084" compliance="936.015031840757" volume="0.199996954869957" physical_volume="0.1293697449705" physical_greyness="0.140067623407054" nObj="108">
+        <excitation index="0" objective="936.02" objective_weight="1"/>
+      </iteration>
+      <iteration number="96" duration="0.085" compliance="948.201862485742" volume="0.199995102526197" physical_volume="0.123993200834061" physical_greyness="0.140915171936465" nObj="109">
+        <excitation index="0" objective="948.2" objective_weight="1"/>
+      </iteration>
+      <iteration number="97" duration="0.081" compliance="940.655681991996" volume="0.199996181244924" physical_volume="0.126662143664772" physical_greyness="0.141993275600944" nObj="110">
+        <excitation index="0" objective="940.66" objective_weight="1"/>
+      </iteration>
+      <iteration number="98" duration="0.073" compliance="939.508847476037" volume="0.199996309209325" physical_volume="0.127161989042866" physical_greyness="0.141666846706961" nObj="111">
+        <excitation index="0" objective="939.51" objective_weight="1"/>
+      </iteration>
+      <iteration number="99" duration="0.074" compliance="939.207999217581" volume="0.199996338359987" physical_volume="0.12725640162786" physical_greyness="0.141859291345086" nObj="112">
+        <excitation index="0" objective="939.21" objective_weight="1"/>
+      </iteration>
+      <iteration number="100" duration="0.091" compliance="938.373992813493" volume="0.199996367115494" physical_volume="0.127450889181401" physical_greyness="0.141819228044968" nObj="113">
+        <excitation index="0" objective="938.37" objective_weight="1"/>
+      </iteration>
+      <iteration number="101" duration="0.085" compliance="938.091827709179" volume="0.199996368980839" physical_volume="0.127499522385919" physical_greyness="0.141805898949834" nObj="114">
+        <excitation index="0" objective="938.09" objective_weight="1"/>
+      </iteration>
+      <iteration number="102" duration="0.085" compliance="937.768612590553" volume="0.199996374072631" physical_volume="0.127546063159094" physical_greyness="0.141928318135125" nObj="115">
+        <excitation index="0" objective="937.77" objective_weight="1"/>
+      </iteration>
+      <iteration number="103" duration="0.084" compliance="937.471731497809" volume="0.199996362681811" physical_volume="0.127599659840834" physical_greyness="0.141806208101859" nObj="116">
+        <excitation index="0" objective="937.47" objective_weight="1"/>
+      </iteration>
+      <iteration number="104" duration="0.089" compliance="937.062929172623" volume="0.199996385396936" physical_volume="0.127687480201757" physical_greyness="0.14159154628417" nObj="117">
+        <excitation index="0" objective="937.06" objective_weight="1"/>
+      </iteration>
+      <iteration number="105" duration="0.079" compliance="936.84784549949" volume="0.199996389222676" physical_volume="0.127836798179505" physical_greyness="0.141577033716482" nObj="118">
+        <excitation index="0" objective="936.85" objective_weight="1"/>
+      </iteration>
+      <iteration number="106" duration="0.078" compliance="936.776164626486" volume="0.199996390285745" physical_volume="0.127868412097861" physical_greyness="0.141430177827185" nObj="119">
+        <excitation index="0" objective="936.78" objective_weight="1"/>
+      </iteration>
+      <iteration number="107" duration="0.085" compliance="936.760974946551" volume="0.199996387149047" physical_volume="0.127841025412195" physical_greyness="0.141568673629023" nObj="120">
+        <excitation index="0" objective="936.76" objective_weight="1"/>
+      </iteration>
+      <iteration number="108" duration="0.115" compliance="936.745994407324" volume="0.199996389429096" physical_volume="0.127827617414894" physical_greyness="0.141627066541232" nObj="121">
+        <excitation index="0" objective="936.75" objective_weight="1"/>
+      </iteration>
+      <iteration number="109" duration="0.121" compliance="924.133333145188" volume="0.199998495773446" physical_volume="0.134579857996583" physical_greyness="0.137274649556897" nObj="122">
+        <excitation index="0" objective="924.13" objective_weight="1"/>
+      </iteration>
+      <iteration number="110" duration="0.084" compliance="921.492984673366" volume="0.199998951834766" physical_volume="0.136351309159289" physical_greyness="0.136233133423711" nObj="123">
+        <excitation index="0" objective="921.49" objective_weight="1"/>
+      </iteration>
+      <iteration number="111" duration="0.086" compliance="922.982179354481" volume="0.19999862819944" physical_volume="0.135543238833751" physical_greyness="0.136829777688358" nObj="124">
+        <excitation index="0" objective="922.98" objective_weight="1"/>
+      </iteration>
+      <iteration number="112" duration="0.089" compliance="922.69202633375" volume="0.199998668342316" physical_volume="0.135691681095376" physical_greyness="0.136782165780377" nObj="125">
+        <excitation index="0" objective="922.69" objective_weight="1"/>
+      </iteration>
+      <iteration number="113" duration="0.078" compliance="921.893199059187" volume="0.199998818926474" physical_volume="0.136102470594009" physical_greyness="0.136466692506676" nObj="126">
+        <excitation index="0" objective="921.89" objective_weight="1"/>
+      </iteration>
+      <iteration number="114" duration="0.091" compliance="921.492154184178" volume="0.199998888847215" physical_volume="0.136092831004362" physical_greyness="0.136893917845279" nObj="127">
+        <excitation index="0" objective="921.49" objective_weight="1"/>
+      </iteration>
+      <iteration number="115" duration="0.121" compliance="925.952399774098" volume="0.199998061854179" physical_volume="0.133239065565187" physical_greyness="0.13818527219955" nObj="128">
+        <excitation index="0" objective="925.95" objective_weight="1"/>
+      </iteration>
+      <iteration number="116" duration="0.094" compliance="923.824921303627" volume="0.199998402167042" physical_volume="0.134345664808769" physical_greyness="0.13754337881051" nObj="129">
+        <excitation index="0" objective="923.82" objective_weight="1"/>
+      </iteration>
+      <iteration number="117" duration="0.093" compliance="923.638006951038" volume="0.199998430094469" physical_volume="0.134559566878122" physical_greyness="0.137302426966026" nObj="130">
+        <excitation index="0" objective="923.64" objective_weight="1"/>
+      </iteration>
+      <iteration number="118" duration="0.089" compliance="923.433186175005" volume="0.19999846615949" physical_volume="0.134637796837264" physical_greyness="0.137614507558741" nObj="131">
+        <excitation index="0" objective="923.43" objective_weight="1"/>
+      </iteration>
+      <iteration number="119" duration="0.079" compliance="923.432291366267" volume="0.199998458544518" physical_volume="0.134691260119273" physical_greyness="0.137453829068415" nObj="132">
+        <excitation index="0" objective="923.43" objective_weight="1"/>
+      </iteration>
+      <iteration number="120" duration="0.092" compliance="923.448168393981" volume="0.199998453694206" physical_volume="0.134709863751508" physical_greyness="0.137356673847399" nObj="133">
+        <excitation index="0" objective="923.45" objective_weight="1"/>
+      </iteration>
+      <iteration number="121" duration="0.092" compliance="923.446736448764" volume="0.199998452533088" physical_volume="0.134741347807979" physical_greyness="0.137291375182286" nObj="134">
+        <excitation index="0" objective="923.45" objective_weight="1"/>
+      </iteration>
+      <iteration number="122" duration="0.085" compliance="923.420926734624" volume="0.199998449523808" physical_volume="0.134877062255361" physical_greyness="0.137217514224462" nObj="135">
+        <excitation index="0" objective="923.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="123" duration="0.185" compliance="923.430565404595" volume="0.199998447791958" physical_volume="0.13484926436837" physical_greyness="0.137116681486693" nObj="142">
+        <excitation index="0" objective="923.43" objective_weight="1"/>
+      </iteration>
+      <iteration number="124" duration="0.081" compliance="923.430698221516" volume="0.199998445057408" physical_volume="0.134854879277914" physical_greyness="0.137121849830753" nObj="143">
+        <excitation index="0" objective="923.43" objective_weight="1"/>
+      </iteration>
+      <iteration number="125" duration="0.087" compliance="923.429949658947" volume="0.199998444804366" physical_volume="0.134851721409313" physical_greyness="0.137134633375918" nObj="144">
+        <excitation index="0" objective="923.43" objective_weight="1"/>
+      </iteration>
+      <iteration number="126" duration="0.09" compliance="923.432630328584" volume="0.199998443812529" physical_volume="0.134847757534214" physical_greyness="0.137132672180468" nObj="145">
+        <excitation index="0" objective="923.43" objective_weight="1"/>
+      </iteration>
+      <iteration number="127" duration="0.088" compliance="917.570991443263" volume="0.199999566295736" physical_volume="0.13861170422144" physical_greyness="0.134890072161724" nObj="146">
+        <excitation index="0" objective="917.57" objective_weight="1"/>
+      </iteration>
+      <iteration number="128" duration="0.084" compliance="916.594484340549" volume="0.19999976256727" physical_volume="0.139417136183149" physical_greyness="0.134340669912244" nObj="147">
+        <excitation index="0" objective="916.59" objective_weight="1"/>
+      </iteration>
+      <iteration number="129" duration="0.089" compliance="915.988215932919" volume="0.199999890330607" physical_volume="0.139978194060056" physical_greyness="0.133912514496268" nObj="148">
+        <excitation index="0" objective="915.99" objective_weight="1"/>
+      </iteration>
+      <iteration number="130" duration="0.08" compliance="915.652002738863" volume="0.199999961694847" physical_volume="0.140317452416414" physical_greyness="0.133610530733205" nObj="149">
+        <excitation index="0" objective="915.65" objective_weight="1"/>
+      </iteration>
+      <iteration number="131" duration="0.083" compliance="915.564830099494" volume="0.199999979798596" physical_volume="0.140405106903525" physical_greyness="0.133519510290656" nObj="150">
+        <excitation index="0" objective="915.56" objective_weight="1"/>
+      </iteration>
+      <iteration number="132" duration="0.091" compliance="915.462693021727" volume="0.200000001976675" physical_volume="0.140509129470961" physical_greyness="0.133455949942358" nObj="151">
+        <excitation index="0" objective="915.46" objective_weight="1"/>
+      </iteration>
+      <iteration number="133" duration="0.088" compliance="915.435461049685" volume="0.200000007609895" physical_volume="0.140502801097932" physical_greyness="0.133531386937712" nObj="152">
+        <excitation index="0" objective="915.44" objective_weight="1"/>
+      </iteration>
+      <iteration number="134" duration="0.086" compliance="915.428651402165" volume="0.200000008936112" physical_volume="0.140515941244558" physical_greyness="0.133516607791004" nObj="153">
+        <excitation index="0" objective="915.43" objective_weight="1"/>
+      </iteration>
+      <iteration number="135" duration="0.101" compliance="915.42383515495" volume="0.200000009902811" physical_volume="0.140526457623591" physical_greyness="0.133510943698762" nObj="154">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="136" duration="0.08" compliance="915.423690109234" volume="0.200000009908513" physical_volume="0.140529003292545" physical_greyness="0.133510784322988" nObj="155">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="137" duration="0.084" compliance="915.423645415705" volume="0.200000009914511" physical_volume="0.140528971740796" physical_greyness="0.133510930093796" nObj="156">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="138" duration="0.085" compliance="915.423180785573" volume="0.200000009988864" physical_volume="0.140530352019133" physical_greyness="0.133511189505498" nObj="157">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="139" duration="0.296" compliance="915.423134869907" volume="0.200000009991581" physical_volume="0.1405303514967" physical_greyness="0.133506663582835" nObj="164">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="140" duration="0.092" compliance="915.423082789324" volume="0.200000009999734" physical_volume="0.140532614664261" physical_greyness="0.133500325261461" nObj="165">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="141" duration="0.093" compliance="915.423080352997" volume="0.200000009999986" physical_volume="0.140532129186084" physical_greyness="0.133502139409132" nObj="166">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="142" duration="0.083" compliance="915.423076459784" volume="0.200000009999987" physical_volume="0.140532238820685" physical_greyness="0.133501920979351" nObj="167">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="143" duration="0.113" compliance="915.423076286081" volume="0.200000009999986" physical_volume="0.140532258112515" physical_greyness="0.133501423267636" nObj="169">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="144" duration="0.079" compliance="915.423076155217" volume="0.200000009999985" physical_volume="0.140532477160536" physical_greyness="0.133500974006382" nObj="170">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="145" duration="0.084" compliance="915.423076100371" volume="0.200000009999985" physical_volume="0.14053258352519" physical_greyness="0.133500770516364" nObj="171">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="146" duration="0.197" compliance="915.423076085753" volume="0.200000009999985" physical_volume="0.140532650353077" physical_greyness="0.133500591471918" nObj="177">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="147" duration="0.089" compliance="915.423076080021" volume="0.200000009999985" physical_volume="0.140532644923646" physical_greyness="0.13350064616071" nObj="178">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+      <iteration number="148" duration="0.084" compliance="915.423076073194" volume="0.200000009999985" physical_volume="0.140532591822576" physical_greyness="0.133500746050081" nObj="179">
+        <excitation index="0" objective="915.42" objective_weight="1"/>
+      </iteration>
+    </process>
+  </optimization>
+</cfsInfo>
